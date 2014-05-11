@@ -1711,9 +1711,15 @@ function __eval(__source, __global, __address, __sourceMap) {
       + (__sourceMap ? '\n//# sourceMappingURL=' + __sourceMap : '');
     
     // we need to ensure eval runs in a global scope
-    var script = document.createElement('script');
-    script.innerHTML = 'eval("' + __source.replace(/[\\"']/g, '\\$&').replace(/\u0000/g, '\\0').replace(/\n/g, '\\n') + '");';
-    document.head.appendChild(script);
+    if (__global == __$global) {
+      __global.__source = __source;
+      var script = document.createElement('script');
+      script.innerHTML = 'eval(__source)';
+      document.head.appendChild(script);
+      delete __global.__source;
+    }
+    else
+      eval(__source);
   }
   catch(e) {
     if (e.name == 'SyntaxError')
