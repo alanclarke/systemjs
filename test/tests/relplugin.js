@@ -1,0 +1,1 @@
+export * from './relpluginasset.coffee!plugin';

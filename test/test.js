@@ -246,9 +246,17 @@ asyncTest('Simple compiler Plugin', function() {
 
 asyncTest('Mapping to a plugin', function() {
   System.map['pluginrequest'] = 'tests/compiled.coffee!';
-  System.map['coffee'] = 'tests/compiler-plugin';
   System['import']('pluginrequest').then(function(m) {
     ok(m.extra == 'yay!', 'Plugin not applying.');
+    start();
+  }, err);
+});
+
+asyncTest('Relative plugin load', function() {
+  System.map['plugin'] = 'tests/plugin/compiler-plugin';
+  System['import']('tests/relplugin').then(function(m) {
+    ok(m.p == 5);
+    ok(m.plugin == true);
     start();
   }, err);
 });
